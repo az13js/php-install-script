@@ -26,13 +26,20 @@ rm -fr php_7_3_13
 tar -axf php_7_3_13.tar.gz
 cd php_7_3_13
 
+R_PATH=""
+R_PATH="$R_PATH -Wl,-rpath=/opt/openssl-111d/lib"
+R_PATH="$R_PATH -Wl,-rpath=/opt/zlib_1_2_11/lib"
+R_PATH="$R_PATH -Wl,-rpath=/opt/bzip2_1_0_6/lib"
+R_PATH="$R_PATH -Wl,-rpath=/opt/libxml2-2-9-10/lib"
+R_PATH="$R_PATH -Wl,-rpath=/opt/pcre2_10_34/lib"
+
 ./configure \
 CC=/opt/gcc_9/bin/gcc \
-CFLAGS="-O3" \
+CFLAGS="-O3${R_PATH}" \
 CXX=/opt/gcc_9/bin/g++ \
 --prefix=$PHP_INSTALL --enable-fpm --with-fpm-user=$DEFAULT_USER \
 --with-fpm-group=$DEFAULT_USER_GROUP --enable-phpdbg \
---enable-phpdbg-readline --enable-sigchild --enable-libgcc \
+--enable-sigchild --enable-libgcc \
 --with-libxml-dir=$LIB_XML2_PFIX --with-openssl=$OPENSSL_PFIX \
 --with-pcre-regex=$PCRE_PFIX --with-pcre-jit --with-zlib=$ZLIB_PFIX \
 --with-zlib-dir=$ZLIB_PFIX --enable-bcmath --with-bz2=$BZIP2_PFIX \
@@ -47,7 +54,7 @@ CXX=/opt/gcc_9/bin/g++ \
 #--with-libzip=$ZIP_PFIX --with-readline=$RL_PFIX --with-xsl=$XSL_PFIX \
 #--enable-zip --with-gd=$GD_PFIX --with-webp-dir=$WEBP_PFIX \
 #--with-jpeg-dir=$JPG_PFIX --with-png-dir=$PNG_PFIX --enable-gd-jis-conv \
-#--with-freetype-dir=$FTYPE2_PFIX
+#--with-freetype-dir=$FTYPE2_PFIX --enable-phpdbg-readline
 
 make
 make install
